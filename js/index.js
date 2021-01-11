@@ -1,48 +1,52 @@
-let product_to_be_displayed = 0;
-
-
 document.addEventListener("DOMContentLoaded", () => {
-    let appleMarker = document.getElementById('apple');
-    appleMarker.addEventListener("markerFound", (event) => {
-        console.log("apple found!");
-        product_to_be_displayed = 0;
-        //display_product();
+  let scene = document.getElementById("primary_scene");
+  products.forEach(product => {
+    // create marker
+    let marker_node = document.createElement("a-marker");
+    marker_node.setAttribute("preset", product.preset);
+    let entity_node = document.createElement("a-entity");
+    entity_node.setAttribute("id", product.entity_name);
+    entity_node.setAttribute("rotation", "-90 0 0");
+    entity_node.setAttribute("htmlembed","");
+    entity_node.setAttribute("position","0 0.5 0");
+    marker_node.appendChild(entity_node);
+    scene.appendChild(marker_node);
+
+    marker_node.addEventListener("markerFound", (event) => {
+        console.log(product.name + " found!");
     });
-    appleMarker.addEventListener("markerLost", (event) => {
-        console.log("apple lost!");
+    marker_node.addEventListener("markerLost", (event) => {
+        console.log(product.name +" lost!");
     });
-    let orangeMarker = document.getElementById('orange');
-    orangeMarker.addEventListener("markerFound", (event) => {
-        console.log("orange found!");
-        product_to_be_displayed = 1;
-        //display_product();
-    });
-    orangeMarker.addEventListener("markerLost", (event) => {
-        console.log("orange lost!");
-    });
+    display_product(product);
+  });
+
 });
 
-function display_product()
+function display_product( product_info)
 {
+  let entity =  document.getElementById(product_info.entity_name);
   let product = document.getElementById('product1');
-  console.log(product);
-  let product_info = products[product_to_be_displayed];
+  let product_copy = product.cloneNode(true);
 
-  let title = Utils.findChildById(product, "title", true);
+  let title = Utils.findChildById(product_copy, "title", true);
   title.innerHTML = product_info.name;
-  Utils.findChildById(product, "product_image", true).src = product_info.img_src;
-  Utils.findChildById(product, "price-value", true).innerHTML = product_info.price;
-  Utils.findChildById(product, "description-value", true).innerHTML = product_info.description;
+  Utils.findChildById(product_copy, "product_image", true).src = product_info.img_src;
+  Utils.findChildById(product_copy, "price-value", true).innerHTML = product_info.price;
+  Utils.findChildById(product_copy, "description-value", true).innerHTML = product_info.description;
   
-  let reviews = Utils.findChildById(product, "all_reviews", true);
+  let reviews = Utils.findChildById(product_copy, "all_reviews", true);
 
   reviews.innerHTML = '';
   product_info.reviews.forEach(element => {
-    new_review = reviews.createElement("div");
+    new_review = document.createElement("div");
     new_review.innerHTML = element;
     reviews.appendChild(new_review);
+    new_hr = document.createElement("hr");
+    new_hr.setAttribute("class", "line2");
+    reviews.appendChild(new_hr);
   });
-  console.log(product);
+  entity.appendChild(product_copy);
 }
 
 
