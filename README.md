@@ -2,6 +2,8 @@
 
 Using your webcam, this software identifies some markers and then it draws(using the [aframe](https://aframe.io/) library) for each marker, details of a product that has that marker assigned to it. The drawing of the product detalis is done using the [aframe-htmlembed-component](https://github.com/supereggbert/aframe-htmlembed-component) component. The library draws the product using a html template.
 
+An enhanced version of this software can be used inside a phisical store, where the customers have glasses with a camera wich draws the details for products that are in the custumer's field of vision(or to which product does the client point to, using his hand).
+
 ## Demo
 
 ![Demo](demo.png)
